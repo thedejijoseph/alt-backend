@@ -28,7 +28,7 @@ SECRET_KEY = '1kcd&@(doi6#!d%-pfm5o2i_a%oo8-ggmgtrqger58jhaw)q=('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv('DEBUG') == 'True' else False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'wx-alt-backend.herokuapp.com']
 
 
 # Application definition
