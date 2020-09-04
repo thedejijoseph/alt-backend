@@ -22,5 +22,6 @@ from . import views
 urlpatterns = [
     path('', views.RootView.as_view()),
     path('merchant/', include('merchant.urls')),
+    path('customer/', include('customer.urls')),
     path('admin/', admin.site.urls),
 ]
