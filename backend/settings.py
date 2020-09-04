@@ -41,8 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # custom apps`
+    # custom apps
     'merchant',
+    'customer',
 
     # third party apps
     'rest_framework',
@@ -91,6 +92,18 @@ DATABASES = {
             'host': os.getenv('MG_DB_HOST')
         }
     },
+    'postgres': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('PG_DB_NAME'),
+        'USER': os.getenv('PG_DB_USER'),
+        'PORT': os.getenv('PG_DB_PORT'),
+        'HOST': os.getenv('PG_DB_HOST'),
+        'PASSWORD': os.getenv('PG_DB_PASSWORD')
+    }
+    # 'sqlite': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3'
+    # }
 }
 
 

@@ -1,5 +1,6 @@
+
 from django.shortcuts import render
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, UserManager
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
@@ -8,8 +9,8 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 
-from .serializers import UserSerializer
-
+from merchant.serializers import CreateMerchantSerializer, UserSerializer
+from merchant.models import Merchant
 class RootView(APIView):
     def get(self, request):
         return Response({
@@ -18,21 +19,30 @@ class RootView(APIView):
 
 class UserSignup(APIView):
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = CreateMerchantSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        # if serializer data is validated, create a new user
-        user = User.objects.create_user(
+        # check if a user account exists already
+        account = authenticate(
             username=data['username'],
-            email=data['email'],
             password=data['password']
         )
-        token = Token.objects.create(user=user)
+        user_account_message = 'User profile exists already. '
+
+        if not account:
+            account = User.objects.create_user(
+                username=data['username'],
+                password=data['password']
+            )
+            user_account_message = ''
+        
+        merchant = Merchant.objects.create(account=account)
+        token = Token.objects.create(user=account)
 
         return Response(
             {
-                'detail': 'User created successfully',
+                'detail': f'{user_account_message}Merchant account created successfully',
                 'token': token.key
             },
             status = status.HTTP_201_CREATED
