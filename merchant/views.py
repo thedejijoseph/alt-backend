@@ -29,6 +29,9 @@ class UserSignup(APIView):
             password=data['password']
         )
         user_account_message = 'User profile exists already. '
+        print(account, '>>>>>')
+        if account:
+            token = Token.objects.get(user=account)
 
         if not account:
             account = User.objects.create_user(
@@ -36,9 +39,9 @@ class UserSignup(APIView):
                 password=data['password']
             )
             user_account_message = ''
+            token = Token.objects.create(user=account)
         
-        merchant = Merchant.objects.create(account=account)
-        token = Token.objects.create(user=account)
+        Merchant.objects.create(account=account)
 
         return Response(
             {

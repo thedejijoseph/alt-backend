@@ -31,6 +31,8 @@ class CustomerSignup(APIView):
             password=data['password']    
         )
         user_account_mesage = 'User profile exists already. '
+        if account:
+            token = Token.objects.get(user=account)
 
         if not account:
             account = User.objects.create_user(
@@ -38,9 +40,9 @@ class CustomerSignup(APIView):
                 password=data['password']
             )
             user_account_mesage = ''
+            token = Token.objects.create(user=account)
         
-        customer = Customer.objects.create(account=account)
-        token = Token.objects.create(user=account)
+        Customer.objects.create(account=account)
 
         return Response(
             {
