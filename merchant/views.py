@@ -29,11 +29,10 @@ class UserSignup(APIView):
             password=data['password']
         )
         user_account_message = 'User profile exists already. '
-        print(account, '>>>>>')
         if account:
             token = Token.objects.get(user=account)
 
-        if not account:
+        else:
             account = User.objects.create_user(
                 username=data['username'],
                 password=data['password']
